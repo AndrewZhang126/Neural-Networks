@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 3 Programming Assignment 1 in the Sequence Models course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/nlp-sequence-models/home/week/3
 
-# In[1]:
 
 
 from tensorflow.keras.layers import Bidirectional, Concatenate, Permute, Dot, Input, LSTM, Multiply
@@ -21,16 +20,10 @@ import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[ ]:
-
 
 # load dataset
 m = 10000
 dataset, human_vocab, machine_vocab, inv_machine_vocab = load_dataset(m)
-
-
-# In[ ]:
-
 
 Tx = 30
 Ty = 10
@@ -38,8 +31,6 @@ Ty = 10
 # preprocess data
 X, Y, Xoh, Yoh = preprocess_data(dataset, human_vocab, machine_vocab, Tx, Ty)
 
-
-# In[13]:
 
 
 # repeat values
@@ -57,6 +48,7 @@ activator = Activation(softmax, name='attention_weights')
 
 # compute dot product
 dotor = Dot(axes = 1)
+
 
 
 """
@@ -86,15 +78,11 @@ def one_step_attention(a, s_prev):
     return context
 
 
-# In[15]:
-
 
 # number of units for "a" and "s" hidden states
 n_a = 32 
 n_s = 64 
 
-
-# In[16]:
 
 
 # post-attention LSTM layer
@@ -145,14 +133,10 @@ def modelf(Tx, Ty, n_a, n_s, human_vocab_size, machine_vocab_size):
     return model
 
 
-# In[18]:
-
 
 # create the model
 model = modelf(Tx, Ty, n_a, n_s, len(human_vocab), len(machine_vocab))
 
-
-# In[22]:
 
 
 # compile the model
@@ -160,28 +144,20 @@ opt = Adam(lr=0.005, beta_1=0.9, beta_2=0.999, decay=0.01)
 model.compile(loss = 'categorical_crossentropy', optimizer = opt, metrics = ['accuracy'])
 
 
-# In[24]:
-
 
 s0 = np.zeros((m, n_s))
 c0 = np.zeros((m, n_s))
 outputs = list(Yoh.swapaxes(0,1))
 
 
-# In[ ]:
-
 
 model.fit([Xoh, s0, c0], outputs, epochs=1, batch_size=100)
 
-
-# In[26]:
 
 
 # load pre-trained weights
 model.load_weights('models/model.h5')
 
-
-# In[ ]:
 
 
 # print results
@@ -200,12 +176,10 @@ for example in EXAMPLES:
     print("output:", ''.join(output),"\n")
 
 
-# In[ ]:
-
 
 # plot attention map
 attention_map = plot_attention_map(model, human_vocab, inv_machine_vocab, "Tuesday 09 Oct 1993", num = 7, n_s = 64);
 
 
-# # References
+# References
 # [1] https://www.coursera.org/learn/nlp-sequence-models/programming/L0BBe/neural-machine-translation
