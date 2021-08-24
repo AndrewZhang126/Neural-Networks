@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 3 Programming Assignment 2 in the Sequence Models course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/nlp-sequence-models/home/week/3
 
-# In[1]:
 
 
 import numpy as np
@@ -16,8 +15,6 @@ import IPython
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[8]:
-
 
 # the number of time steps input to the model from the spectrogram
 Tx = 5511 
@@ -26,21 +23,15 @@ Tx = 5511
 n_freq = 101 
 
 
-# In[9]:
-
 
 # the number of time steps in the output of our model
 Ty = 1375 
 
 
-# In[ ]:
-
 
 # load audio segments using pydub 
 activates, negatives, backgrounds = load_raw_audio('./raw_data/')
 
-
-# In[11]:
 
 
 """
@@ -53,8 +44,6 @@ def get_random_time_segment(segment_ms):
     
     return (segment_start, segment_end)
 
-
-# In[14]:
 
 
 """
@@ -73,13 +62,10 @@ def is_overlapping(segment_time, previous_segments):
     return overlap
 
 
-# In[17]:
-
 
 """
 This function inserts an audio segment into background noise at a random time step with no overlaps
 """
-
 def insert_audio_clip(background, audio_clip, previous_segments):
    
     segment_ms = len(audio_clip)
@@ -108,13 +94,10 @@ def insert_audio_clip(background, audio_clip, previous_segments):
     return new_background, segment_time
 
 
-# In[32]:
-
 
 """
 This function sets the 50 time step labels after a segment as ones
 """
-
 def insert_ones(y, segment_end_ms):
    
     _, Ty = y.shape
@@ -131,8 +114,6 @@ def insert_ones(y, segment_end_ms):
     
     return y
 
-
-# In[45]:
 
 
 """
@@ -193,16 +174,12 @@ def create_training_example(background, activates, negatives, Ty):
     return x, y
 
 
-# In[ ]:
-
 
 x, y = create_training_example(backgrounds[0], activates, negatives, Ty)
 
 #plot the labels
 plt.plot(y[0])
 
-
-# In[ ]:
 
 
 # gemerate small training set
@@ -220,15 +197,11 @@ X = np.array(X)
 Y = np.array(Y)
 
 
-# In[53]:
-
 
 # load preprocessed dev set examples
 X_dev = np.load("./XY_dev/X_dev.npy")
 Y_dev = np.load("./XY_dev/Y_dev.npy")
 
-
-# In[54]:
 
 
 from tensorflow.keras.callbacks import ModelCheckpoint
@@ -237,8 +210,6 @@ from tensorflow.keras.layers import Dense, Activation, Dropout, Input, Masking, 
 from tensorflow.keras.layers import GRU, Bidirectional, BatchNormalization, Reshape
 from tensorflow.keras.optimizers import Adam
 
-
-# In[55]:
 
 
 """
@@ -282,13 +253,9 @@ def modelf(input_shape):
     return model  
 
 
-# In[57]:
-
 
 model = modelf(input_shape = (Tx, n_freq))
 
-
-# In[59]:
 
 
 from tensorflow.keras.models import model_from_json
@@ -301,28 +268,20 @@ model = model_from_json(loaded_model_json)
 model.load_weights('./models/model.h5')
 
 
-# In[61]:
-
 
 opt = Adam(lr=1e-6, beta_1=0.9, beta_2=0.999)
 model.compile(loss='binary_crossentropy', optimizer=opt, metrics=["accuracy"])
 
 
-# In[ ]:
-
 
 model.fit(X, Y, batch_size = 16, epochs=1)
 
-
-# In[ ]:
 
 
 # test model
 loss, acc, = model.evaluate(X_dev, Y_dev)
 print("Dev set accuracy = ", acc)
 
-
-# In[64]:
 
 
 # run audio through the network
@@ -344,8 +303,6 @@ def detect_triggerword(filename):
     plt.show()
     return predictions
 
-
-# In[65]:
 
 
 chime_file = "audio_examples/chime.wav"
@@ -382,8 +339,6 @@ def chime_on_activate(filename, predictions, threshold):
     audio_clip.export("chime_output.wav", format='wav')
 
 
-# In[ ]:
-
 
 # test model on audio clips
 filename = "./raw_data/dev/1.wav"
@@ -392,5 +347,6 @@ chime_on_activate(filename, prediction, 0.5)
 IPython.display.Audio("./chime_output.wav")
 
 
-# # References
+
+# References
 # [1] https://www.coursera.org/learn/nlp-sequence-models/programming/MHAsK/trigger-word-detection
