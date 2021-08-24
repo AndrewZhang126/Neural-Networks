@@ -1,14 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 1 Programming Assignment 1 in the Sequence Models course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/nlp-sequence-models/home/week/1
 
-# In[1]:
 
 
 import numpy as np
-from rnn_utils import *
 
-
-# In[ ]:
 
 
 # softmax activation function
@@ -22,8 +18,6 @@ def softmax(x):
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
-
-# In[8]:
 
 
 """
@@ -92,8 +86,6 @@ def rnn_forward(x, a0, parameters):
     return a, y_pred, caches
 
 
-# In[23]:
-
 
 """
 This function implements the forward step of a single LSTM cell
@@ -149,6 +141,7 @@ def lstm_cell_forward(xt, a_prev, c_prev, parameters):
     return a_next, c_next, yt_pred, cache
 
 
+
 """
 This function implements forward propagation for an RNN using LSTM cells
 """
@@ -195,5 +188,6 @@ def lstm_forward(x, a0, parameters):
     return a, y, c, caches
 
 
-# # References
+
+# References
 # [1] https://www.coursera.org/learn/nlp-sequence-models/programming/yIJFK/building-your-recurrent-neural-network-step-by-step
