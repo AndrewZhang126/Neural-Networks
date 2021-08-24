@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 4 Programming Assignments 1 and 2 in the Neural Networks and Deep Learning course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/neural-networks-deep-learning/home/week/4
 
-# # Deep L-layer Neural Network with Numpy
-
-# In[ ]:
 
 
 import numpy as np
@@ -17,37 +14,6 @@ plt.rcParams['image.cmap'] = 'gray'
 get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
-
-# The steps for creating a neural network:
-# 1. Initialize parameters
-# 2. Implement forward propagation
-# 3. Compute cost function
-# 4. Implement backward propagation
-# 5. Update parameters
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-parameters = initialize_parameters(3,2,1)
-
-print("W1 = " + str(parameters["W1"]))
-print("b1 = " + str(parameters["b1"]))
-print("W2 = " + str(parameters["W2"]))
-print("b2 = " + str(parameters["b2"]))
-
-initialize_parameters_test(initialize_parameters)
-
-
-# <a name='3-2'></a>
-# ### Initialize parameters
-
-# In[ ]:
 
 
 """
@@ -75,38 +41,6 @@ def initialize_parameters_deep(layer_dims):
     return parameters
 
 
-# In[ ]:
-
-
-parameters = initialize_parameters_deep([5,4,3])
-
-print("W1 = " + str(parameters["W1"]))
-print("b1 = " + str(parameters["b1"]))
-print("W2 = " + str(parameters["W2"]))
-print("b2 = " + str(parameters["b2"]))
-
-initialize_parameters_deep_test(initialize_parameters_deep)
-
-
-# <a name='4'></a>
-# ### Implement forward propagation
-
-# Formulas:
-# $$Z^{[l]} = W^{[l]}A^{[l-1]} +b^{[l]}\tag{4}$$
-# $$A^{[l]} = g(Z^{[l]})$$
-
-# In[ ]:
-
-
-t_A, t_W, t_b = linear_forward_test_case()
-t_Z, t_linear_cache = linear_forward(t_A, t_W, t_b)
-print("Z = " + str(t_Z))
-
-linear_forward_test(linear_forward)
-
-
-# In[ ]:
-
 
 """
 This function implements a sigmoid activation
@@ -119,6 +53,7 @@ def sigmoid(Z):
     cache = Z
     
     return A, cache
+
 
 
 """
@@ -134,8 +69,6 @@ def relu(Z):
 
     return A, cache
 
-
-# In[ ]:
 
 
 """
@@ -154,6 +87,7 @@ def linear_forward(A, W, b):
     cache = (A, W, b)
     
     return Z, cache
+
 
 
 """
@@ -188,6 +122,7 @@ def linear_activation_forward(A_prev, W, b, activation):
 
     # A will be the activation value, or the output for this layer to be passed to the next layer
     return A, cache
+
 
 
 """
@@ -225,45 +160,6 @@ def L_model_forward(X, parameters):
     return AL, caches
 
 
-# In[ ]:
-
-
-t_A_prev, t_W, t_b = linear_activation_forward_test_case()
-
-t_A, t_linear_activation_cache = linear_activation_forward(t_A_prev, t_W, t_b, activation = "sigmoid")
-print("With sigmoid: A = " + str(t_A))
-
-t_A, t_linear_activation_cache = linear_activation_forward(t_A_prev, t_W, t_b, activation = "relu")
-print("With ReLU: A = " + str(t_A))
-
-linear_activation_forward_test(linear_activation_forward)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-t_X, t_parameters = L_model_forward_test_case_2hidden()
-t_AL, t_caches = L_model_forward(t_X, t_parameters)
-
-print("AL = " + str(t_AL))
-
-L_model_forward_test(L_model_forward)
-
-
-# <a name='5'></a>
-# ### Compute cost function
-
-# Formula:
-# $$-\frac{1}{m} \sum\limits_{i = 1}^{m} (y^{(i)}\log\left(a^{[L] (i)}\right) + (1-y^{(i)})\log\left(1- a^{[L](i)}\right)) \tag{7}$$
-
-# In[ ]:
-
 
 """
 This function computes the cross-entropy cost
@@ -286,27 +182,6 @@ def compute_cost(AL, Y):
     return cost
 
 
-# In[ ]:
-
-
-t_Y, t_AL = compute_cost_test_case()
-t_cost = compute_cost(t_AL, t_Y)
-
-print("Cost: " + str(t_cost))
-
-compute_cost_test(compute_cost)
-
-
-# <a name='6'></a>
-# ### Implement backward propagation
-
-# Formulas:
-# $$ dW^{[l]} = \frac{\partial \mathcal{J} }{\partial W^{[l]}} = \frac{1}{m} dZ^{[l]} A^{[l-1] T} \tag{8}$$
-# $$ db^{[l]} = \frac{\partial \mathcal{J} }{\partial b^{[l]}} = \frac{1}{m} \sum_{i = 1}^{m} dZ^{[l](i)}\tag{9}$$
-# $$ dA^{[l-1]} = \frac{\partial \mathcal{L} }{\partial A^{[l-1]}} = W^{[l] T} dZ^{[l]} \tag{10}$$
-
-# In[ ]:
-
 
 """
 This function implements backward propagation for a sigmoid unit
@@ -319,6 +194,7 @@ def sigmoid_backward(dA, cache):
     assert (dZ.shape == Z.shape)
     
     return dZ
+
 
 
 """
@@ -336,8 +212,6 @@ def relu_backward(dA, cache):
     
     return dZ
 
-
-# In[ ]:
 
 
 """
@@ -357,6 +231,7 @@ def linear_backward(dZ, cache):
     dA_prev = np.dot(W.T, dZ)
     
     return dA_prev, dW, db
+
 
 
 """
@@ -382,6 +257,7 @@ def linear_activation_backward(dA, cache, activation):
         dA_prev, dW, db = linear_backward(dZ, linear_cache)
     
     return dA_prev, dW, db
+
 
 
 """
@@ -428,75 +304,6 @@ def L_model_backward(AL, Y, caches):
     return grads
 
 
-# In[ ]:
-
-
-t_dZ, t_linear_cache = linear_backward_test_case()
-t_dA_prev, t_dW, t_db = linear_backward(t_dZ, t_linear_cache)
-
-print("dA_prev: " + str(t_dA_prev))
-print("dW: " + str(t_dW))
-print("db: " + str(t_db))
-
-linear_backward_test(linear_backward)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-t_dAL, t_linear_activation_cache = linear_activation_backward_test_case()
-
-t_dA_prev, t_dW, t_db = linear_activation_backward(t_dAL, t_linear_activation_cache, activation = "sigmoid")
-print("With sigmoid: dA_prev = " + str(t_dA_prev))
-print("With sigmoid: dW = " + str(t_dW))
-print("With sigmoid: db = " + str(t_db))
-
-t_dA_prev, t_dW, t_db = linear_activation_backward(t_dAL, t_linear_activation_cache, activation = "relu")
-print("With relu: dA_prev = " + str(t_dA_prev))
-print("With relu: dW = " + str(t_dW))
-print("With relu: db = " + str(t_db))
-
-linear_activation_backward_test(linear_activation_backward)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-t_AL, t_Y_assess, t_caches = L_model_backward_test_case()
-grads = L_model_backward(t_AL, t_Y_assess, t_caches)
-
-print("dA0 = " + str(grads['dA0']))
-print("dA1 = " + str(grads['dA1']))
-print("dW1 = " + str(grads['dW1']))
-print("dW2 = " + str(grads['dW2']))
-print("db1 = " + str(grads['db1']))
-print("db2 = " + str(grads['db2']))
-
-L_model_backward_test(L_model_backward)
-
-
-# <a name='6-4'></a>
-# ### Update parameters
-
-# <a name='ex-10'></a>
-# Formulas:
-# $$ W^{[l]} = W^{[l]} - \alpha \text{ } dW^{[l]} \tag{16}$$
-# $$ b^{[l]} = b^{[l]} - \alpha \text{ } db^{[l]} \tag{17}$$
-
-# In[ ]:
-
 
 """
 This function updatea parameters using gradient descent
@@ -518,26 +325,6 @@ def update_parameters(params, grads, learning_rate):
         
     return parameters
 
-
-# In[ ]:
-
-
-t_parameters, grads = update_parameters_test_case()
-t_parameters = update_parameters(t_parameters, grads, 0.1)
-
-print ("W1 = "+ str(t_parameters["W1"]))
-print ("b1 = "+ str(t_parameters["b1"]))
-print ("W2 = "+ str(t_parameters["W2"]))
-print ("b2 = "+ str(t_parameters["b2"]))
-
-update_parameters_test(update_parameters)
-
-
-# <a name='6-4'></a>
-# 
-# ### Build model
-
-# In[ ]:
 
 
 """
@@ -582,8 +369,6 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
     return parameters, costs
 
 
-# In[ ]:
-
 
 #  4-layer model
 layers_dims = [12288, 20, 7, 5, 1]
@@ -598,15 +383,12 @@ pred_train = predict(train_x, train_y, parameters)
 pred_test = predict(test_x, test_y, parameters)
 
 
-# In[ ]:
-
 
 # display images that were labeled incorrectly
 print_mislabeled_images(classes, test_x, test_y, pred_test)
 
 
-# ## References
-# 
+
+# References
 # [1] https://www.coursera.org/learn/neural-networks-deep-learning/programming/GY8CB/building-your-deep-neural-network-step-by-step/lab
-# 
 # [2] https://www.coursera.org/learn/neural-networks-deep-learning/programming/Sfu8g/deep-neural-network-application/lab
