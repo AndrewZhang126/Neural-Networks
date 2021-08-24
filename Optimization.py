@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 2 Programming Assignment 1 in the Improving Deep Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/deep-neural-network/home/week/2
 
-# In[1]:
 
 
 import numpy as np
@@ -20,8 +19,6 @@ get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
 
-# In[2]:
-
 
 """
 This function implements one step of gradient descent
@@ -38,23 +35,6 @@ def update_parameters_with_gd(parameters, grads, learning_rate):
         
     return parameters
 
-
-# In[3]:
-
-
-parameters, grads, learning_rate = update_parameters_with_gd_test_case()
-learning_rate = 0.01
-parameters = update_parameters_with_gd(parameters, grads, learning_rate)
-
-print("W1 =\n" + str(parameters["W1"]))
-print("b1 =\n" + str(parameters["b1"]))
-print("W2 =\n" + str(parameters["W2"]))
-print("b2 =\n" + str(parameters["b2"]))
-
-update_parameters_with_gd_test(update_parameters_with_gd)
-
-
-# In[21]:
 
 
 """
@@ -89,25 +69,6 @@ def random_mini_batches(X, Y, mini_batch_size = 64, seed = 0):
     return mini_batches
 
 
-# In[23]:
-
-
-t_X, t_Y, mini_batch_size = random_mini_batches_test_case()
-mini_batches = random_mini_batches(t_X, t_Y, mini_batch_size)
-
-print ("shape of the 1st mini_batch_X: " + str(mini_batches[0][0].shape))
-print ("shape of the 2nd mini_batch_X: " + str(mini_batches[1][0].shape))
-print ("shape of the 3rd mini_batch_X: " + str(mini_batches[2][0].shape))
-print ("shape of the 1st mini_batch_Y: " + str(mini_batches[0][1].shape))
-print ("shape of the 2nd mini_batch_Y: " + str(mini_batches[1][1].shape)) 
-print ("shape of the 3rd mini_batch_Y: " + str(mini_batches[2][1].shape))
-print ("mini batch sanity check: " + str(mini_batches[0][0][0][0:3]))
-
-random_mini_batches_test(random_mini_batches)
-
-
-# In[26]:
-
 
 """
 This function implements velocity
@@ -124,22 +85,6 @@ def initialize_velocity(parameters):
         
     return v
 
-
-# In[27]:
-
-
-parameters = initialize_velocity_test_case()
-
-v = initialize_velocity(parameters)
-print("v[\"dW1\"] =\n" + str(v["dW1"]))
-print("v[\"db1\"] =\n" + str(v["db1"]))
-print("v[\"dW2\"] =\n" + str(v["dW2"]))
-print("v[\"db2\"] =\n" + str(v["db2"]))
-
-initialize_velocity_test(initialize_velocity)
-
-
-# In[30]:
 
 
 """
@@ -161,41 +106,6 @@ def update_parameters_with_momentum(parameters, grads, v, beta, learning_rate):
     return parameters, v
 
 
-# In[31]:
-
-
-parameters, grads, v = update_parameters_with_momentum_test_case()
-
-parameters, v = update_parameters_with_momentum(parameters, grads, v, beta = 0.9, learning_rate = 0.01)
-print("W1 = \n" + str(parameters["W1"]))
-print("b1 = \n" + str(parameters["b1"]))
-print("W2 = \n" + str(parameters["W2"]))
-print("b2 = \n" + str(parameters["b2"]))
-print("v[\"dW1\"] = \n" + str(v["dW1"]))
-print("v[\"db1\"] = \n" + str(v["db1"]))
-print("v[\"dW2\"] = \n" + str(v["dW2"]))
-print("v[\"db2\"] = v" + str(v["db2"]))
-
-update_parameters_with_momentum_test(update_parameters_with_momentum)
-
-
-# <a name='ex-5'></a>   
-# ### Exercise 5 - initialize_adam
-# 
-# Initialize the Adam variables $v, s$ which keep track of the past information.
-# 
-# **Instruction**: The variables $v, s$ are python dictionaries that need to be initialized with arrays of zeros. Their keys are the same as for `grads`, that is:
-# for $l = 1, ..., L$:
-# ```python
-# v["dW" + str(l)] = ... #(numpy array of zeros with the same shape as parameters["W" + str(l)])
-# v["db" + str(l)] = ... #(numpy array of zeros with the same shape as parameters["b" + str(l)])
-# s["dW" + str(l)] = ... #(numpy array of zeros with the same shape as parameters["W" + str(l)])
-# s["db" + str(l)] = ... #(numpy array of zeros with the same shape as parameters["b" + str(l)])
-# 
-# ```
-
-# In[34]:
-
 
 """
 This function initializes Adam variables
@@ -216,26 +126,6 @@ def initialize_adam(parameters) :
     
     return v, s
 
-
-# In[35]:
-
-
-parameters = initialize_adam_test_case()
-
-v, s = initialize_adam(parameters)
-print("v[\"dW1\"] = \n" + str(v["dW1"]))
-print("v[\"db1\"] = \n" + str(v["db1"]))
-print("v[\"dW2\"] = \n" + str(v["dW2"]))
-print("v[\"db2\"] = \n" + str(v["db2"]))
-print("s[\"dW1\"] = \n" + str(s["dW1"]))
-print("s[\"db1\"] = \n" + str(s["db1"]))
-print("s[\"dW2\"] = \n" + str(s["dW2"]))
-print("s[\"db2\"] = \n" + str(s["db2"]))
-
-initialize_adam_test(initialize_adam)
-
-
-# In[46]:
 
 
 """
@@ -275,40 +165,15 @@ def update_parameters_with_adam(parameters, grads, v, s, t, learning_rate = 0.01
     return parameters, v, s, v_corrected, s_corrected
 
 
-# In[47]:
-
-
-parametersi, grads, vi, si = update_parameters_with_adam_test_case()
-
-t = 2
-learning_rate = 0.02
-beta1 = 0.8
-beta2 = 0.888
-epsilon = 1e-2
-
-parameters, v, s, vc, sc  = update_parameters_with_adam(parametersi, grads, vi, si, t, learning_rate, beta1, beta2, epsilon)
-print(f"W1 = \n{parameters['W1']}")
-print(f"W2 = \n{parameters['W2']}")
-print(f"b1 = \n{parameters['b1']}")
-print(f"b2 = \n{parameters['b2']}")
-
-update_parameters_with_adam_test(update_parameters_with_adam)
-
-
-# In[ ]:
-
 
 # load the dataset
 train_X, train_Y = load_dataset()
 
 
-# In[49]:
-
 
 """
 This function implements a 3-layer neural network
 """
-
 def model(X, Y, layers_dims, optimizer, learning_rate = 0.0007, mini_batch_size = 64, beta = 0.9,
           beta1 = 0.9, beta2 = 0.999,  epsilon = 1e-8, num_epochs = 5000, print_cost = True):
 
@@ -377,8 +242,6 @@ def model(X, Y, layers_dims, optimizer, learning_rate = 0.0007, mini_batch_size 
     return parameters
 
 
-# In[ ]:
-
 
 # train 3-layer model with gradient descent
 layers_dims = [train_X.shape[0], 5, 2, 1]
@@ -394,8 +257,6 @@ axes.set_xlim([-1.5,2.5])
 axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
-
-# In[ ]:
 
 
 # train 3-layer model with momentum
@@ -413,8 +274,6 @@ axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 
-# In[ ]:
-
 
 # train 3-layer model with Adam
 layers_dims = [train_X.shape[0], 5, 2, 1]
@@ -430,8 +289,6 @@ axes.set_xlim([-1.5,2.5])
 axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
-
-# In[53]:
 
 
 """
@@ -510,8 +367,6 @@ def model(X, Y, layers_dims, optimizer, learning_rate = 0.0007, mini_batch_size 
     return parameters
 
 
-# In[54]:
-
 
 """
 This function updates the learning rate using exponential weight decay
@@ -522,23 +377,7 @@ def update_lr(learning_rate0, epoch_num, decay_rate):
     
     return learning_rate
 
-
-# In[55]:
-
-
-learning_rate = 0.5
-print("Original learning rate: ", learning_rate)
-epoch_num = 2
-decay_rate = 1
-learning_rate_2 = update_lr(learning_rate, epoch_num, decay_rate)
-
-print("Updated learning rate: ", learning_rate_2)
-
-update_lr_test(update_lr)
-
-
-# In[ ]:
-
+   
 
 # train 3-layer model with gradient descent and exponential learning rate decay
 layers_dims = [train_X.shape[0], 5, 2, 1]
@@ -555,39 +394,16 @@ axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 
-# In[65]:
-
 
 """
 This function updates the learning rate using exponential weight decay with fixed interval scheduling
 """
-
 def schedule_lr_decay(learning_rate0, epoch_num, decay_rate, time_interval=1000):
 
     learning_rate = (1 / (1 + decay_rate * np.floor(epoch_num / time_interval))) * learning_rate0
     
     return learning_rate
 
-
-# In[66]:
-
-
-learning_rate = 0.5
-print("Original learning rate: ", learning_rate)
-
-epoch_num_1 = 10
-epoch_num_2 = 100
-decay_rate = 0.3
-time_interval = 100
-learning_rate_1 = schedule_lr_decay(learning_rate, epoch_num_1, decay_rate, time_interval)
-learning_rate_2 = schedule_lr_decay(learning_rate, epoch_num_2, decay_rate, time_interval)
-print("Updated learning rate after {} epochs: ".format(epoch_num_1), learning_rate_1)
-print("Updated learning rate after {} epochs: ".format(epoch_num_2), learning_rate_2)
-
-schedule_lr_decay_test(schedule_lr_decay)
-
-
-# In[ ]:
 
 
 # train 3-layer model with gradient descent and learning rate scheduling
@@ -605,8 +421,6 @@ axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 
-# In[ ]:
-
 
 # train 3-layer model with momentum and learning rate scheduling
 layers_dims = [train_X.shape[0], 5, 2, 1]
@@ -623,8 +437,6 @@ axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 
-# In[ ]:
-
 
 # train 3-layer model with adam and learning rate scheduling
 layers_dims = [train_X.shape[0], 5, 2, 1]
@@ -639,6 +451,7 @@ axes = plt.gca()
 axes.set_xlim([-1.5,2.5])
 axes.set_ylim([-1,1.5])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
+
 
 
 # # References
