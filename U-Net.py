@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 3 Programming Assignment 2 in the Convolutional Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/convolutional-neural-networks/home/week/3
 
-# In[1]:
 
 
 import tensorflow as tf
@@ -14,16 +13,14 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Conv2DTranspose
 from tensorflow.keras.layers import concatenate
 
-
-# In[2]:
-
-
 import os
 import numpy as np 
 import pandas as pd
 import imageio
 import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
+
+
 
 # load and split data
 path = ''
@@ -34,18 +31,9 @@ mask_list = os.listdir(mask_path)
 image_list = [image_path+i for i in image_list]
 mask_list = [mask_path+i for i in mask_list]
 
-
-# In[ ]:
-
-
 image_list_ds = tf.data.Dataset.list_files(image_list, shuffle=False)
 mask_list_ds = tf.data.Dataset.list_files(mask_list, shuffle=False)
 
-for path in zip(image_list_ds.take(3), mask_list_ds.take(3)):
-    print(path)
-
-
-# In[ ]:
 
 
 image_filenames = tf.constant(image_list)
@@ -53,12 +41,6 @@ masks_filenames = tf.constant(mask_list)
 
 dataset = tf.data.Dataset.from_tensor_slices((image_filenames, masks_filenames))
 
-for image, mask in dataset.take(1):
-    print(image)
-    print(mask)
-
-
-# In[6]:
 
 
 # preprocess data
@@ -83,7 +65,6 @@ image_ds = dataset.map(process_path)
 processed_image_ds = image_ds.map(preprocess)
 
 
-# In[39]:
 
 
 """
@@ -103,8 +84,6 @@ def upsampling_block(expansive_input, contractive_input, n_filters=32):
     
     return conv
 
-
-# In[50]:
 
 
 """
@@ -144,8 +123,6 @@ def unet_model(input_size=(96, 128, 3), n_filters=32, n_classes=23):
     return model
 
 
-# In[52]:
-
 
 # set model dimensions
 img_height = 96
@@ -155,15 +132,11 @@ num_channels = 3
 unet = unet_model((img_height, img_width, num_channels))
 
 
-# In[54]:
-
 
 unet.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-
-# In[55]:
 
 
 """
@@ -182,8 +155,6 @@ def display(display_list):
     plt.show()
 
 
-# In[59]:
-
 
 # create prediction
 def create_mask(pred_mask):
@@ -191,8 +162,6 @@ def create_mask(pred_mask):
     pred_mask = pred_mask[..., tf.newaxis]
     return pred_mask[0]
 
-
-# In[ ]:
 
 
 # train the model
@@ -205,8 +174,6 @@ train_dataset = processed_image_ds.cache().shuffle(BUFFER_SIZE).batch(BATCH_SIZE
 print(processed_image_ds.element_spec)
 model_history = unet.fit(train_dataset, epochs=EPOCHS)
 
-
-# In[61]:
 
 
 """
@@ -230,5 +197,6 @@ def show_predictions(dataset=None, num=1):
 show_predictions(train_dataset, 6)
 
 
-# # References 
+
+# References 
 # [1] https://www.coursera.org/learn/convolutional-neural-networks/programming/omqTR/image-segmentation-with-u-net
