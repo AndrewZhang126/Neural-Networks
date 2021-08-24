@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 1 Programming Assignment 2 in the Improving Deep Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/deep-neural-network/home/week/1
 
-# In[1]:
 
 
 import numpy as np
@@ -19,14 +18,10 @@ get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
 
-# In[ ]:
-
 
 # load the dataset
 train_X, train_Y, test_X, test_Y = load_2D_dataset()
 
-
-# In[3]:
 
 
 """
@@ -83,8 +78,6 @@ def model(X, Y, learning_rate = 0.3, num_iterations = 30000, print_cost = True, 
     return parameters
 
 
-# In[ ]:
-
 
 # plot model without regularization
 plt.title("Model without regularization")
@@ -93,8 +86,6 @@ axes.set_xlim([-0.75,0.40])
 axes.set_ylim([-0.75,0.65])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
-
-# In[10]:
 
 
 """
@@ -118,18 +109,6 @@ def compute_cost_with_regularization(A3, Y, parameters, lambd):
     
     return cost
 
-
-# In[11]:
-
-
-A3, t_Y, parameters = compute_cost_with_regularization_test_case()
-cost = compute_cost_with_regularization(A3, t_Y, parameters, lambd=0.1)
-print("cost = " + str(cost))
-
-compute_cost_with_regularization_test(compute_cost_with_regularization)
-
-
-# In[12]:
 
 
 """
@@ -160,20 +139,6 @@ def backward_propagation_with_regularization(X, Y, cache, lambd):
     return gradients
 
 
-# In[13]:
-
-
-t_X, t_Y, cache = backward_propagation_with_regularization_test_case()
-
-grads = backward_propagation_with_regularization(t_X, t_Y, cache, lambd = 0.7)
-print ("dW1 = \n"+ str(grads["dW1"]))
-print ("dW2 = \n"+ str(grads["dW2"]))
-print ("dW3 = \n"+ str(grads["dW3"]))
-backward_propagation_with_regularization_test(backward_propagation_with_regularization)
-
-
-# In[ ]:
-
 
 parameters = model(train_X, train_Y, lambd = 0.7)
 
@@ -182,8 +147,6 @@ predictions_train = predict(train_X, train_Y, parameters)
 print ("On the test set:")
 predictions_test = predict(test_X, test_Y, parameters)
 
-
-# In[ ]:
 
 
 # plot model with L2 regularization
@@ -194,13 +157,10 @@ axes.set_ylim([-0.75,0.65])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 
-# In[16]:
-
 
 """
 This function implements forward propagation with dropout regularization
 """
-
 def forward_propagation_with_dropout(X, parameters, keep_prob = 0.5):
     
     # retrieve parameters
@@ -236,19 +196,6 @@ def forward_propagation_with_dropout(X, parameters, keep_prob = 0.5):
     
     return A3, cache
 
-
-# In[17]:
-
-
-t_X, parameters = forward_propagation_with_dropout_test_case()
-
-A3, cache = forward_propagation_with_dropout(t_X, parameters, keep_prob=0.7)
-print ("A3 = " + str(A3))
-
-forward_propagation_with_dropout_test(forward_propagation_with_dropout)
-
-
-# In[18]:
 
 
 """
@@ -287,21 +234,6 @@ def backward_propagation_with_dropout(X, Y, cache, keep_prob):
     return gradients
 
 
-# In[19]:
-
-
-t_X, t_Y, cache = backward_propagation_with_dropout_test_case()
-
-gradients = backward_propagation_with_dropout(t_X, t_Y, cache, keep_prob=0.8)
-
-print ("dA1 = \n" + str(gradients["dA1"]))
-print ("dA2 = \n" + str(gradients["dA2"]))
-
-backward_propagation_with_dropout_test(backward_propagation_with_dropout)
-
-
-# In[ ]:
-
 
 parameters = model(train_X, train_Y, keep_prob = 0.86, learning_rate = 0.3)
 
@@ -310,8 +242,6 @@ predictions_train = predict(train_X, train_Y, parameters)
 print ("On the test set:")
 predictions_test = predict(test_X, test_Y, parameters)
 
-
-# In[ ]:
 
 
 # plot model with dropout
@@ -322,5 +252,6 @@ axes.set_ylim([-0.75,0.65])
 plot_decision_boundary(lambda x: predict_dec(parameters, x.T), train_X, train_Y)
 
 
-# # References
+
+# References
 # [1] https://www.coursera.org/learn/deep-neural-network/programming/FjL8C/regularization
