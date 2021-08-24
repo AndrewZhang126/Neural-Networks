@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 3 Programming Assignment 1 in the Convolutional Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/convolutional-neural-networks/home/week/3
 
-# In[1]:
 
 
 import argparse
@@ -26,8 +25,6 @@ from yad2k.utils.utils import draw_boxes, get_colors_for_classes, scale_boxes, r
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[2]:
-
 
 """
 This function filters YOLO boxes according to a threshold value
@@ -51,8 +48,6 @@ def yolo_filter_boxes(boxes, box_confidence, box_class_probs, threshold = .6):
     
     return scores, boxes, classes
 
-
-# In[6]:
 
 
 """
@@ -83,8 +78,6 @@ def iou(box1, box2):
     return iou
 
 
-# In[8]:
-
 
 """
 This function implements non-max suppression on a set of boxes
@@ -106,57 +99,21 @@ def yolo_non_max_suppression(scores, boxes, classes, max_boxes = 10, iou_thresho
     return scores, boxes, classes
 
 
-# In[9]:
-
-
-# BEGIN UNIT TEST
-tf.random.set_seed(10)
-scores = tf.random.normal([54,], mean=1, stddev=4, seed = 1)
-boxes = tf.random.normal([54, 4], mean=1, stddev=4, seed = 1)
-classes = tf.random.normal([54,], mean=1, stddev=4, seed = 1)
-scores, boxes, classes = yolo_non_max_suppression(scores, boxes, classes)
-
-assert type(scores) == EagerTensor, "Use tensoflow functions"
-print("scores[2] = " + str(scores[2].numpy()))
-print("boxes[2] = " + str(boxes[2].numpy()))
-print("classes[2] = " + str(classes[2].numpy()))
-ddprint("scores.shape = " + str(scores.numpy().shape))
-print("boxes.shape = " + str(boxes.numpy().shape))
-print("classes.shape = " + str(classes.numpy().shape))
-
-assert type(scores) == EagerTensor, "Use tensoflow functions"
-assert type(boxes) == EagerTensor, "Use tensoflow functions"
-assert type(classes) == EagerTensor, "Use tensoflow functions"
-
-assert scores.shape == (10,), "Wrong shape"
-assert boxes.shape == (10, 4), "Wrong shape"
-assert classes.shape == (10,), "Wrong shape"
-
-assert np.isclose(scores[2].numpy(), 8.147684), "Wrong value on scores"
-assert np.allclose(boxes[2].numpy(), [ 6.0797963, 3.743308, 1.3914018, -0.34089637]), "Wrong value on boxes"
-assert np.isclose(classes[2].numpy(), 1.7079165), "Wrong value on classes"
-
-print("\033[92m All tests passed!")
-# END UNIT TEST
-
-
-# In[10]:
-
-
+"""
+This function converts YOLO boxes to bounding box corners
+"""
 def yolo_boxes_to_corners(box_xy, box_wh):
-    """Convert YOLO box predictions to bounding box corners."""
+    
     box_mins = box_xy - (box_wh / 2.)
     box_maxes = box_xy + (box_wh / 2.)
 
     return tf.keras.backend.concatenate([
-        box_mins[..., 1:2],  # y_min
-        box_mins[..., 0:1],  # x_min
-        box_maxes[..., 1:2],  # y_max
-        box_maxes[..., 0:1]  # x_max
+        box_mins[..., 1:2],  
+        box_mins[..., 0:1],  
+        box_maxes[..., 1:2],  
+        box_maxes[..., 0:1]  
     ])
 
-
-# In[11]:
 
 
 """
@@ -188,8 +145,6 @@ def yolo_eval(yolo_outputs, image_shape = (720, 1280), max_boxes=10, score_thres
     return scores, boxes, classes
 
 
-# In[13]:
-
 
 # contains data about the classes and boxes
 class_names = read_classes("model_data/coco_classes.txt")
@@ -197,14 +152,10 @@ anchors = read_anchors("model_data/yolo_anchors.txt")
 model_image_size = (608, 608) 
 
 
-# In[14]:
-
 
 # load pre-trained Keras YOLO model
 yolo_model = load_model("model_data/", compile=False)
 
-
-# In[ ]:
 
 
 """
@@ -289,8 +240,6 @@ def draw_boxes(image, boxes, box_classes, class_names, scores=None):
     return np.array(image)
 
 
-# In[16]:
-
 
 """
 This function prints and plots the prediction boxes for an image
@@ -326,7 +275,8 @@ def predict(image_file):
     return out_scores, out_boxes, out_classes
 
 
-# # References
+
+# References
 # [1] https://www.coursera.org/learn/convolutional-neural-networks/programming/3VCFG/car-detection-with-yolo
 # [2] https://arxiv.org/abs/1506.02640
 # [3] https://arxiv.org/abs/1612.08242
