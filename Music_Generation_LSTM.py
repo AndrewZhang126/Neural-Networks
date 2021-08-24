@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 1 Programming Assignment 3 in the Sequence Models course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/nlp-sequence-models/home/week/1
 
-# In[1]:
 
 
 import IPython
@@ -15,14 +14,10 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
 
-# In[ ]:
-
 
 #preprocess raw music data into values
 X, Y, n_values, indices_values, chords = load_music_utils('data/original_metheny.mid')
 
-
-# In[10]:
 
 
 # number of dimensions for the hidden state of each LSTM cell.
@@ -75,22 +70,16 @@ def djmodel(Tx, LSTM_cell, densor, reshaper):
     return model
 
 
-# In[11]:
-
 
 # create the model
 model = djmodel(Tx=30, LSTM_cell=LSTM_cell, densor=densor, reshaper=reshaper)
 
-
-# In[14]:
 
 
 # compile the model
 opt = Adam(lr=0.01, beta_1=0.9, beta_2=0.999, decay=0.01)
 model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
 
-
-# In[15]:
 
 
 # train the model
@@ -99,8 +88,6 @@ a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
 history = model.fit([X, a0, c0], list(Y), epochs=100, verbose = 0)
 
-
-# In[20]:
 
 
 """
@@ -145,22 +132,16 @@ def music_inference_model(LSTM_cell, densor, Ty=100):
     return inference_model
 
 
-# In[21]:
-
 
 # define the model
 inference_model = music_inference_model(LSTM_cell, densor, Ty = 50)
 
-
-# In[24]:
 
 
 x_initializer = np.zeros((1, 1, n_values))
 a_initializer = np.zeros((1, n_a))
 c_initializer = np.zeros((1, n_a))
 
-
-# In[46]:
 
 
 """
@@ -183,11 +164,10 @@ def predict_and_sample(inference_model, x_initializer = x_initializer, a_initial
     return results, indices
 
 
-# In[ ]:
-
 
 # generate and record music
 out_stream = generate_music(inference_model, indices_values, chords)
+
 
 
 # # References
