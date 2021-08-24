@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 3 Programming Assignment 1 in the Improving Deep Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/deep-neural-network/home/week/3
 
-# In[1]:
 
 
 import numpy as np
@@ -11,8 +10,6 @@ from tensorflow.python.framework.ops import EagerTensor
 from tensorflow.python.ops.resource_variable_ops import ResourceVariable
 import time
 
-
-# In[3]:
 
 
 # you can specify your own dataset for training
@@ -24,10 +21,6 @@ x_test = tf.data.Dataset.from_tensor_slices(test_dataset['test_set_x'])
 y_test = tf.data.Dataset.from_tensor_slices(test_dataset['test_set_y'])
 
 
-# There's one more additional difference between TensorFlow datasets and Numpy arrays: If you need to transform one, you would invoke the `map` method to apply the function passed as an argument to each of the elements.
-
-# In[9]:
-
 
 """
 This function transforms and normalizes an image into a tensor
@@ -38,21 +31,16 @@ def normalize(image):
     return image
 
 
-# In[10]:
-
 
 # normalize data
 new_train = x_train.map(normalize)
 new_test = x_test.map(normalize)
 
 
-# In[15]:
-
 
 """
 This function implements the linear function Y = WX + b
 """
-
 def linear_function():
     
     # initalize variables
@@ -64,19 +52,6 @@ def linear_function():
     return Y
 
 
-# In[16]:
-
-
-result = linear_function()
-print(result)
-
-assert type(result) == EagerTensor, "Use the TensorFlow API"
-assert np.allclose(result, [[-2.15657382], [ 2.95891446], [-1.08926781], [-0.84538042]]), "Error"
-print("\033[92mAll test passed")
-
-
-# In[17]:
-
 
 """
 This function implements the sigmoid function
@@ -87,52 +62,6 @@ def sigmoid(z):
     return a
 
 
-# In[18]:
-
-
-result = sigmoid(-1)
-print ("type: " + str(type(result)))
-print ("dtype: " + str(result.dtype))
-print ("sigmoid(-1) = " + str(result))
-print ("sigmoid(0) = " + str(sigmoid(0.0)))
-print ("sigmoid(12) = " + str(sigmoid(12)))
-
-def sigmoid_test(target):
-    result = target(0)
-    assert(type(result) == EagerTensor)
-    assert (result.dtype == tf.float32)
-    assert sigmoid(0) == 0.5, "Error"
-    assert sigmoid(-1) == 0.26894143, "Error"
-    assert sigmoid(12) == 0.9999939, "Error"
-
-    print("\033[92mAll test passed")
-
-sigmoid_test(sigmoid)
-
-
-# <a name='2-3'></a>
-# ### 2.3 - Using One Hot Encodings
-# 
-# Many times in deep learning you will have a $Y$ vector with numbers ranging from $0$ to $C-1$, where $C$ is the number of classes. If $C$ is for example 4, then you might have the following y vector which you will need to convert like this:
-# 
-# 
-# <img src="images/onehot.png" style="width:600px;height:150px;">
-# 
-# This is called "one hot" encoding, because in the converted representation, exactly one element of each column is "hot" (meaning set to 1). To do this conversion in numpy, you might have to write a few lines of code. In TensorFlow, you can use one line of code: 
-# 
-# - [tf.one_hot(labels, depth, axis=0)](https://www.tensorflow.org/api_docs/python/tf/one_hot)
-# 
-# `axis=0` indicates the new axis is created at dimension 0
-# 
-# <a name='ex-3'></a>
-# ### Exercise 3 - one_hot_matrix
-# 
-# Implement the function below to take one label and the total number of classes $C$, and return the one hot encoding in a column wise matrix. Use `tf.one_hot()` to do this, and `tf.reshape()` to reshape your one hot tensor! 
-# 
-# - `tf.reshape(tensor, shape)`
-
-# In[37]:
-
 
 """
 This function implements one hot encoding for a single label
@@ -141,27 +70,6 @@ def one_hot_matrix(label, depth=6):
     one_hot = tf.reshape(tf.one_hot(label, depth, axis=0), (depth, 1))
     return one_hot
 
-
-# In[38]:
-
-
-def one_hot_matrix_test(target):
-    label = tf.constant(1)
-    depth = 4
-    result = target(label, depth)
-    print(result)
-    assert result.shape[0] == depth, "Use the parameter depth"
-    assert result.shape[1] == 1, f"Reshape to have only 1 column"
-    assert np.allclose(result,  [[0.], [1.], [0.], [0.]] ), "Wrong output. Use tf.one_hot"
-    result = target(3, depth)
-    assert np.allclose(result, [[0.], [0.], [0.], [1.]] ), "Wrong output. Use tf.one_hot"
-    
-    print("\033[92mAll test passed")
-
-one_hot_matrix_test(one_hot_matrix)
-
-
-# In[43]:
 
 
 """
@@ -191,38 +99,10 @@ def initialize_parameters():
     return parameters
 
 
-# In[44]:
-
-
-def initialize_parameters_test(target):
-    parameters = target()
-
-    values = {"W1": (25, 12288),
-              "b1": (25, 1),
-              "W2": (12, 25),
-              "b2": (12, 1),
-              "W3": (6, 12),
-              "b3": (6, 1)}
-
-    for key in parameters:
-        print(f"{key} shape: {tuple(parameters[key].shape)}")
-        assert type(parameters[key]) == ResourceVariable, "All parameter must be created using tf.Variable"
-        assert tuple(parameters[key].shape) == values[key], f"{key}: wrong shape"
-        assert np.abs(np.mean(parameters[key].numpy())) < 0.5,  f"{key}: Use the GlorotNormal initializer"
-        assert np.std(parameters[key].numpy()) > 0 and np.std(parameters[key].numpy()) < 1, f"{key}: Use the GlorotNormal initializer"
-
-    print("\033[92mAll test passed")
-    
-initialize_parameters_test(initialize_parameters)
-
-
-# In[46]:
-
 
 """
 This function implements forward propagation using TensorFlow and Keras
 """
-
 # builds a computational graph, which will keep track of operations to calculate gradients for backward propagation
 @tf.function
 
@@ -248,33 +128,6 @@ def forward_propagation(X, parameters):
     return Z3
 
 
-# In[47]:
-
-
-def forward_propagation_test(target, examples):
-    for batch in examples:
-        forward_pass = target(batch, parameters)
-        assert type(forward_pass) == EagerTensor, "Your output is not a tensor"
-        assert forward_pass.shape == (6, 1), "Last layer must use W3 and b3"
-        assert np.any(forward_pass < 0), "Don't use a ReLu layer at end of your network"
-        assert np.allclose(forward_pass, 
-                           [[-0.13082162],
-                           [ 0.21228778],
-                           [ 0.7050022 ],
-                           [-1.1224034 ],
-                           [-0.20386729],
-                           [ 0.9526217 ]]), "Output does not match"
-        print(forward_pass)
-        break
-    
-
-    print("\033[92mAll test passed")
-
-forward_propagation_test(forward_propagation, new_train)
-
-
-# In[48]:
-
 
 """
 This function computes the cross entropy cost function
@@ -290,24 +143,6 @@ def compute_cost(logits, labels):
     
     return cost
 
-
-# In[49]:
-
-
-def compute_cost_test(target):
-    labels = np.array([[0., 1.], [0., 0.], [1., 0.]])
-    logits = np.array([[0.6, 0.4], [0.4, 0.6], [0.4, 0.6]])
-    result = compute_cost(logits, labels)
-    print(result)
-    assert(type(result) == EagerTensor), "Use the TensorFlow API"
-    assert (np.abs(result - (0.7752516 +  0.9752516 + 0.7752516) / 3.0) < 1e-7), "Test does not match. Did you get the mean of your cost functions?"
-
-    print("\033[92mAll test passed")
-
-compute_cost_test(compute_cost)
-
-
-# In[50]:
 
 
 """
@@ -384,7 +219,8 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = 0.0001,
     return parameters
 
 
-# # References
+
+# References
 # [1] https://www.coursera.org/learn/deep-neural-network/programming/fuJJY/tensorflow-introduction
 # [2] https://www.tensorflow.org/guide/autodiff 
 # [3] https://www.tensorflow.org/api_docs/python/tf/GradientTape
