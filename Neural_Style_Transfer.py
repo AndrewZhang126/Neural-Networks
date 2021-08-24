@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 4 Programming Assignment 2 in the Convolutional Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/convolutional-neural-networks/home/week/4
 
-# In[5]:
 
 
 import os
@@ -18,8 +17,6 @@ import pprint
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[ ]:
-
 
 pp = pprint.PrettyPrinter(indent=4)
 img_size = 400
@@ -32,8 +29,6 @@ vgg = tf.keras.applications.VGG19(include_top=False,
 vgg.trainable = False
 pp.pprint(vgg)
 
-
-# In[ ]:
 
 
 """
@@ -57,8 +52,6 @@ def compute_content_cost(content_output, generated_output):
     return J_content
 
 
-# In[7]:
-
 
 """
 This function computes the Gram matrix
@@ -67,8 +60,6 @@ def gram_matrix(A):
     GA = tf.linalg.matmul(A, tf.transpose(A))
     return GA
 
-
-# In[ ]:
 
 
 # define the layers to use in the style cost function
@@ -79,8 +70,6 @@ STYLE_LAYERS = [
     ('block4_conv1', 0.2),
     ('block5_conv1', 0.2)]
 
-
-# In[9]:
 
 
 """
@@ -128,8 +117,6 @@ def compute_style_cost(style_image_output, generated_image_output, STYLE_LAYERS=
     return J_style
 
 
-# In[15]:
-
 
 """
 This function implements the total cost function
@@ -142,22 +129,17 @@ def total_cost(J_content, J_style, alpha = 10, beta = 40):
     return J
 
 
-# In[ ]:
-
 
 # load content image
 content_image = np.array(Image.open("images/iamge_name.jpg").resize((img_size, img_size)))
 content_image = tf.constant(np.reshape(content_image, ((1,) + content_image.shape)))
 
 
-# In[ ]:
 
-
+# load style image
 style_image =  np.array(Image.open("images/image_name.jpg").resize((img_size, img_size)))
 style_image = tf.constant(np.reshape(style_image, ((1,) + style_image.shape)))
 
-
-# In[ ]:
 
 
 # randomly initialze image to be generated (slightly correlated to content image)
@@ -167,8 +149,6 @@ generated_image = tf.add(generated_image, noise)
 generated_image = tf.clip_by_value(generated_image, clip_value_min=0.0, clip_value_max=1.0)
 
 
-# In[ ]:
-
 
 # load pre-trained VGG-19 model
 def get_layer_outputs(vgg, layer_names):
@@ -176,6 +156,8 @@ def get_layer_outputs(vgg, layer_names):
     model = tf.keras.Model([vgg.input], outputs)
     return model
 
+  
+  
 # specify content and style layers 
 # typically middle layers work best for the content
 content_layer = [('block5_conv4', 1)]
@@ -202,8 +184,6 @@ a_S = vgg_model_outputs(preprocessed_style)
 J_style = compute_style_cost(a_S, a_G)
 
 
-# In[25]:
-
 
 """
 This function truncates pixels to be between 0 and 1
@@ -224,8 +204,6 @@ def tensor_to_image(tensor):
         tensor = tensor[0]
     return Image.fromarray(tensor)
 
-
-# In[26]:
 
 
 """
@@ -252,8 +230,6 @@ def train_step(generated_image):
     return J
 
 
-# In[ ]:
-
 
 # train the model
 epochs = 2501
@@ -268,8 +244,6 @@ for i in range(epochs):
         plt.show() 
 
 
-# In[ ]:
-
 
 # show the content, stlye, and generated images
 fig = plt.figure(figsize=(16, 4))
@@ -283,6 +257,7 @@ ax = fig.add_subplot(1, 3, 3)
 imshow(generated_image[0])
 ax.title.set_text('Generated image')
 plt.show()
+
 
 
 # # References
