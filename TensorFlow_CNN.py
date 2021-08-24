@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 1 Programming Assignment 2 in the Convolutional Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/convolutional-neural-networks/home/week/1
 
-# In[1]:
 
 
 import math
@@ -18,39 +17,10 @@ from tensorflow.python.framework import ops
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[36]:
-
-
-
-
-
-# In[37]:
-
-
-happy_model = happyModel()
-# Print a summary for each layer
-for layer in summary(happy_model):
-    print(layer)
-    
-output = [['ZeroPadding2D', (None, 70, 70, 3), 0, ((3, 3), (3, 3))],
-            ['Conv2D', (None, 64, 64, 32), 4736, 'valid', 'linear', 'GlorotUniform'],
-            ['BatchNormalization', (None, 64, 64, 32), 128],
-            ['ReLU', (None, 64, 64, 32), 0],
-            ['MaxPooling2D', (None, 32, 32, 32), 0, (2, 2), (2, 2), 'valid'],
-            ['Flatten', (None, 32768), 0],
-            ['Dense', (None, 1), 32769, 'sigmoid']]
-    
-comparator(summary(happy_model), output)
-
-
-# In[42]:
-
 
 # load the data
 X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes = load_signs_dataset()
 
-
-# In[44]:
 
 
 """
@@ -69,13 +39,10 @@ Y_train = convert_to_one_hot(Y_train_orig, 6).T
 Y_test = convert_to_one_hot(Y_test_orig, 6).T
 
 
-# In[57]:
-
 
 """
 This function imeplements forward propagation for a CONV -> RELU -> MAXPOOL -> CONV -> RELU -> MAXPOOl -> FC CNN model
 """
-
 def convolutional_model(input_shape):
 
     input_img = tf.keras.Input(shape=input_shape)
@@ -108,30 +75,6 @@ def convolutional_model(input_shape):
     return model
 
 
-# In[58]:
-
-
-conv_model = convolutional_model((64, 64, 3))
-conv_model.compile(optimizer='adam',
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy'])
-conv_model.summary()
-    
-output = [['InputLayer', [(None, 64, 64, 3)], 0],
-        ['Conv2D', (None, 64, 64, 8), 392, 'same', 'linear', 'GlorotUniform'],
-        ['ReLU', (None, 64, 64, 8), 0],
-        ['MaxPooling2D', (None, 8, 8, 8), 0, (8, 8), (8, 8), 'same'],
-        ['Conv2D', (None, 8, 8, 16), 528, 'same', 'linear', 'GlorotUniform'],
-        ['ReLU', (None, 8, 8, 16), 0],
-        ['MaxPooling2D', (None, 2, 2, 16), 0, (4, 4), (4, 4), 'same'],
-        ['Flatten', (None, 64), 0],
-        ['Dense', (None, 6), 390, 'softmax']]
-    
-comparator(summary(conv_model), output)
-
-
-# In[59]:
-
 
 # train the model
 rain_dataset = tf.data.Dataset.from_tensor_slices((X_train, Y_train)).batch(64)
@@ -139,7 +82,8 @@ test_dataset = tf.data.Dataset.from_tensor_slices((X_test, Y_test)).batch(64)
 history = conv_model.fit(train_dataset, epochs=100, validation_data=test_dataset)
 
 
-# # References
+
+# References
 # [1] https://www.coursera.org/learn/convolutional-neural-networks/programming/7Bfm2/convolution-model-application
 # [2] https://www.tensorflow.org/guide/keras/sequential_model
 # [3] https://www.tensorflow.org/guide/keras/functional
