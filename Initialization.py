@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
+# The following code was adapted from Week 1 Programming Assignment 1 in the Improving Deep Neural Networks course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/deep-neural-network/home/week/1
 
 
 import numpy as np
@@ -18,14 +16,10 @@ get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
 
-# In[ ]:
-
 
 # load dataset
 train_X, train_Y, test_X, test_Y = load_dataset()
 
-
-# In[3]:
 
 
 """
@@ -74,8 +68,6 @@ def model(X, Y, learning_rate = 0.01, num_iterations = 15000, print_cost = True,
     return parameters
 
 
-# In[8]:
-
 
 """
 This function implements zero initialization
@@ -88,19 +80,6 @@ def initialize_parameters_zeros(layers_dims):
         parameters['b' + str(l)] = np.zeros((layers_dims[l], 1))
     return parameters
 
-
-# In[9]:
-
-
-parameters = initialize_parameters_zeros([3, 2, 1])
-print("W1 = " + str(parameters["W1"]))
-print("b1 = " + str(parameters["b1"]))
-print("W2 = " + str(parameters["W2"]))
-print("b2 = " + str(parameters["b2"]))
-initialize_parameters_zeros_test(initialize_parameters_zeros)
-
-
-# In[13]:
 
 
 """
@@ -115,19 +94,6 @@ def initialize_parameters_random(layers_dims):
     return parameters
 
 
-# In[14]:
-
-
-parameters = initialize_parameters_random([3, 2, 1])
-print("W1 = " + str(parameters["W1"]))
-print("b1 = " + str(parameters["b1"]))
-print("W2 = " + str(parameters["W2"]))
-print("b2 = " + str(parameters["b2"]))
-initialize_parameters_random_test(initialize_parameters_random)
-
-
-# In[25]:
-
 
 """
 This function implements He initialization
@@ -140,21 +106,6 @@ def initialize_parameters_he(layers_dims):
         parameters['b' + str(l)] = np.zeros((layers_dims[l], 1))
     return parameters
 
-
-# In[26]:
-
-
-parameters = initialize_parameters_he([2, 4, 1])
-print("W1 = " + str(parameters["W1"]))
-print("b1 = " + str(parameters["b1"]))
-print("W2 = " + str(parameters["W2"]))
-print("b2 = " + str(parameters["b2"]))
-
-initialize_parameters_he_test(initialize_parameters_he)
-# parameters
-
-
-# In[ ]:
 
 
 # initialization value can either be "zeros", "random", or "he"
