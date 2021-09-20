@@ -89,3 +89,12 @@ https://youtu.be/yjTL6ACa2OI
 
 ## Trigger Word Detection Visualization
 <img src="images/TriggerWord.png" width="800" height="500">
+
+
+&nbsp;
+
+
+## Debias Word Vectors
+<img src="images/Neutralization.png" width="800" height="500">
+<img src="images/EqualizationBefore.png" width="800" height="500">
+<img src="images/EqualizationAfter.png" width="800" height="500">
