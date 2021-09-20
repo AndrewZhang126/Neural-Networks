@@ -1,20 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
+# The following code was adapted from Week 2 Programming Assignment 1 in the Sequence Models course by DeepLearning.AI offered on Coursera
+# https://www.coursera.org/learn/nlp-sequence-models/home/week/2
 
-# In[1]:
 
 
 import numpy as np
-
-
-# In[2]:
-
-
 #GloVe vectors
 words, word_to_vec_map = read_glove_vecs('data/glove.6B.50d.txt')
 
-
-# In[3]:
 
 
 """
@@ -43,8 +35,6 @@ def cosine_similarity(u, v):
     
     return cosine_similarity
 
-
-# In[15]:
 
 
 """
@@ -82,16 +72,12 @@ def complete_analogy(word_a, word_b, word_c, word_to_vec_map):
     return best_word
 
 
-# In[ ]:
-
 
 # test the code
 triads_to_try = [('italy', 'italian', 'spain'), ('india', 'delhi', 'japan'), ('man', 'woman', 'boy'), ('small', 'smaller', 'large')]
 for triad in triads_to_try:
     print ('{} -> {} :: {} -> {}'.format( *triad, complete_analogy(*triad, word_to_vec_map)))
 
-
-# In[ ]:
 
 
 # display examples of gender bias in word embeddings, 
@@ -102,8 +88,6 @@ word_list = ['lipstick', 'guns', 'science', 'arts', 'literature', 'warrior','doc
 for w in word_list:
     print (w, cosine_similarity(word_to_vec_map[w], g))
 
-
-# In[26]:
 
 
 """
@@ -122,8 +106,6 @@ def neutralize(word, g, word_to_vec_map):
     
     return e_debiased
 
-
-# In[30]:
 
 
 """
@@ -157,9 +139,7 @@ def equalize(pair, bias_axis, word_to_vec_map):
     return e1, e2
 
 
-# In[ ]:
-
-
+# print results of equalization algorithms
 print("cosine similarities before equalizing:")
 print("cosine_similarity(word_to_vec_map[\"man\"], gender) = ", cosine_similarity(word_to_vec_map["man"], g))
 print("cosine_similarity(word_to_vec_map[\"woman\"], gender) = ", cosine_similarity(word_to_vec_map["woman"], g))
@@ -170,8 +150,7 @@ print("cosine_similarity(e1, gender) = ", cosine_similarity(e1, g))
 print("cosine_similarity(e2, gender) = ", cosine_similarity(e2, g))
 
 
-# 
-# # References
-# 
+
+# References
 # [1] https://proceedings.neurips.cc/paper/2016/file/a486cd07e4ac3d270571622f4f316ec5-Paper.pdf
 # [2] https://nlp.stanford.edu/projects/glove/
